@@ -1,0 +1,13 @@
+{
+  "formatVersion": 1,
+  "passTypeIdentifier": "pass.com.yourbrand.loyalty",
+  "teamIdentifier": "TEAMID",
+  "serialNumber": "template",
+  "organizationName": "Your Café",
+  "description": "Loyalty card",
+  "logoText": "Your Café",
+  "foregroundColor": "rgb(255,255,255)",
+  "backgroundColor": "rgb(29,90,71)",
+  "labelColor": "rgb(233,162,59)",
+  "storeCard": { "primaryFields": [], "secondaryFields": [], "auxiliaryFields": [], "backFields": [] }
+}

@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>نداء — طلب ذاتي وولاء</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E9EFEC; --surface:#FFFFFF; --sunk:#DDE6E2; --ink:#14201B; --muted:#55655E;
+  --green:#1D5A47; --green-ink:#FFFFFF; --saffron:#E39E2F; --saffron-soft:#FBEBD0;
+  --line:#C9D5D0; --danger:#A93D2B; --shadow:0 1px 0 rgba(20,32,27,.06);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1613; --surface:#17211D; --sunk:#1E2A25; --ink:#E6EEEA; --muted:#93A59D;
+    --green:#5DB394; --green-ink:#0C1511; --saffron:#F0B255; --saffron-soft:#3A2D16;
+    --line:#2B3833; --danger:#E07A63; --shadow:none; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1613; --surface:#17211D; --sunk:#1E2A25; --ink:#E6EEEA; --muted:#93A59D;
+  --green:#5DB394; --green-ink:#0C1511; --saffron:#F0B255; --saffron-soft:#3A2D16;
+  --line:#2B3833; --danger:#E07A63; --shadow:none; color-scheme:dark;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Readex Pro","Segoe UI",Tahoma,system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
+img{max-width:100%}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-in{max-width:1200px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem}
+.mark{width:34px;height:34px;border-radius:50%;background:var(--green);display:grid;place-items:center;color:var(--green-ink);font-weight:700}
+.store{font-weight:400;color:var(--muted);font-size:.9rem}
+.spacer{flex:1}
+.tabs{display:flex;background:var(--sunk);border-radius:999px;padding:3px;gap:2px}
+.tabs a{text-decoration:none;color:var(--muted);padding:6px 12px;border-radius:999px;font-size:.88rem;white-space:nowrap}
+.tabs a[aria-current="page"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.ghost{background:none;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.85rem}
+.badge{font-size:.75rem;padding:3px 9px;border-radius:999px;background:var(--saffron-soft);color:var(--ink)}
+.badge.live{background:var(--green);color:var(--green-ink)}
+
+/* layout */
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 120px}
+.wide{max-width:1200px;margin:0 auto;padding:16px}
+h1{font-size:1.6rem;line-height:1.2;margin:8px 0 4px;font-weight:700}
+h2{font-size:1.15rem;margin:0 0 10px;font-weight:700}
+.sub{color:var(--muted);margin:0 0 16px}
+
+/* menu */
+.cats{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 16px;white-space:nowrap}
+.cat[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.list{background:var(--surface);border-radius:18px;border:1px solid var(--line)}
+.item{display:grid;grid-template-columns:1fr auto;gap:6px 12px;padding:14px 16px;border-bottom:1px solid var(--line);align-items:center}
+.item:last-child{border-bottom:0}
+.item-name{font-weight:500}
+.meta{color:var(--muted);font-size:.85rem;display:flex;gap:10px;align-items:center}
+.clock{display:inline-flex;align-items:center;gap:4px}
+.price{font-weight:500;font-variant-numeric:tabular-nums}
+.step{display:flex;align-items:center;gap:8px}
+.step button{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:1.1rem;line-height:1}
+.step .add{background:var(--green);color:var(--green-ink);border-color:var(--green)}
+.step span{min-width:18px;text-align:center;font-variant-numeric:tabular-nums}
+
+.bar{position:fixed;bottom:0;inset-inline:0;z-index:6;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 70%,transparent)}
+.bar .btn{max-width:528px;margin:0 auto;display:flex}
+.btn{border:0;border-radius:14px;padding:14px 18px;background:var(--green);color:var(--green-ink);font-weight:500;width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;text-decoration:none}
+.btn.center{justify-content:center}
+.btn.sec{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn.saff{background:var(--saffron);color:#1d1406}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-sm{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 12px;font-size:.88rem}
+.btn-sm.go{background:var(--green);color:var(--green-ink);border-color:var(--green)}
+.btn-sm.saff{background:var(--saffron);color:#1d1406;border-color:var(--saffron)}
+
+/* forms */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
+label{display:block;font-size:.9rem;margin-bottom:6px;font-weight:500}
+.hint{font-size:.82rem;color:var(--muted);margin-top:6px}
+.inp{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:12px 14px;font-size:1rem}
+.inp[dir="ltr"]{text-align:start}
+textarea.inp{min-height:90px;resize:vertical}
+.err{color:var(--danger);font-size:.85rem;margin-top:6px}
+.line{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:.95rem}
+.line.total{border-top:1px dashed var(--line);margin-top:6px;padding-top:12px;font-weight:700}
+.paygrid{display:grid;gap:10px}
+
+/* status ring */
+.status{text-align:center;padding-top:8px}
+.ring-box{position:relative;width:min(78vw,280px);aspect-ratio:1;margin:8px auto 4px}
+.ring-box svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--sunk);stroke-width:14}
+.ring-fg{fill:none;stroke:var(--green);stroke-width:14;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .4s}
+.ready .ring-fg{stroke:var(--saffron)}
+.ring-num{position:absolute;inset:0;display:grid;place-content:center;gap:2px}
+.ring-num small{color:var(--muted);font-size:.85rem}
+.ring-num b{font-size:clamp(4rem,22vw,6.2rem);line-height:1;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.timer{font-size:1.35rem;font-weight:500;font-variant-numeric:tabular-nums;margin:4px 0 2px}
+.ref{font-size:3.2rem;font-weight:700;letter-spacing:.12em;margin:14px 0 4px;direction:ltr}
+.pill{display:inline-block;padding:5px 12px;border-radius:999px;background:var(--sunk);font-size:.85rem}
+.ready .pill{background:var(--saffron-soft)}
+@keyframes pop{0%{transform:scale(.92)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
+.ready .ring-box{animation:pop .6s ease-out}
+@media (prefers-reduced-motion: reduce){.ready .ring-box{animation:none}.ring-fg{transition:none}}
+
+/* loyalty */
+.loy{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+.dot{width:30px;height:30px;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;font-size:.8rem}
+.dot.on{background:var(--green);border:2px solid var(--green);color:var(--green-ink)}
+.wallet{display:grid;gap:8px}
+.wbtn{display:flex;align-items:center;justify-content:center;gap:10px;border-radius:12px;padding:12px;border:0;background:#000;color:#fff;font-weight:500}
+.wbtn.g{background:#1f1f1f}
+.wbtn svg{width:22px;height:22px}
+
+/* cashier */
+.kds{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;align-items:start}
+.col{background:var(--sunk);border-radius:18px;padding:12px}
+.col h2{display:flex;justify-content:space-between;align-items:center;font-size:1rem;margin:2px 4px 10px}
+.count{background:var(--surface);border-radius:999px;padding:1px 10px;font-size:.85rem}
+.ticket{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.t-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.t-num{font-size:2.2rem;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.t-ref{font-size:1.4rem;font-weight:700;letter-spacing:.1em;direction:ltr}
+.t-time{font-variant-numeric:tabular-nums;font-weight:500}
+.t-time.late{color:var(--danger)}
+.t-items{margin:8px 0;padding:0;list-style:none;font-size:.92rem;color:var(--muted)}
+.t-act{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.empty{color:var(--muted);text-align:center;padding:24px 8px;font-size:.9rem}
+
+.log{font-size:.88rem;max-height:340px;overflow:auto}
+.log div{padding:8px 0;border-bottom:1px solid var(--line)}
+.log time{color:var(--muted);font-size:.78rem;display:block}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.row{display:grid;gap:12px}
+
+/* sheet & toast */
+.sheet-bg{position:fixed;inset:0;background:rgba(10,16,13,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--surface);width:100%;max-width:560px;border-radius:22px 22px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px))}
+.toast{position:fixed;bottom:calc(90px + env(safe-area-inset-bottom,0px));inset-inline:16px;margin:0 auto;max-width:480px;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:12px;z-index:30;font-size:.92rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in" id="hdr"></div></header>
+<main id="app"></main>
+<div id="layer"></div>
+<div aria-live="polite" class="sr" id="live"></div>
+
+<script>
+/* ============================================================
+   نداء — واجهة واحدة لثلاث شاشات: العميل (#customer)، الكاشير (#cashier)، الإعدادات (#admin)
+   يعمل في وضعين:
+   - تجريبي: كل البيانات في المتصفح (افتح الكاشير والعميل في تبويبين).
+   - متصل: عند تشغيل الخادم المرفق (server.js) يتصل تلقائياً بـ /api
+   ============================================================ */
+
+const DEFAULT_SETTINGS = {
+  storeName: 'مقهى المساء', storeNameEn: 'Al Masa Café',
+  reviewUrl: 'https://search.google.com/local/writereview?placeid=YOUR_PLACE_ID',
+  currency: 'د.أ', currencyEn: 'JOD', goal: 8, perOrderMin: 1
+};
+const DEFAULT_MENU = [
+  {id:'esp',cat:'hot',ar:'إسبريسو',en:'Espresso',price:1.5,prep:3},
+  {id:'ame',cat:'hot',ar:'أمريكانو',en:'Americano',price:2,prep:3},
+  {id:'lat',cat:'hot',ar:'لاتيه',en:'Latte',price:2.75,prep:4},
+  {id:'spl',cat:'hot',ar:'سبانش لاتيه',en:'Spanish latte',price:3.25,prep:5},
+  {id:'krk',cat:'hot',ar:'شاي كرك',en:'Karak tea',price:1.5,prep:4},
+  {id:'ilt',cat:'cold',ar:'آيس لاتيه',en:'Iced latte',price:3,prep:4},
+  {id:'cbr',cat:'cold',ar:'كولد برو',en:'Cold brew',price:3.5,prep:2},
+  {id:'moj',cat:'cold',ar:'موهيتو نعناع وليمون',en:'Mint lemon mojito',price:3,prep:5},
+  {id:'chs',cat:'sweet',ar:'تشيز كيك',en:'Cheesecake',price:3.5,prep:2},
+  {id:'crs',cat:'sweet',ar:'كرواسون زبدة دافئ',en:'Warm butter croissant',price:2,prep:6},
+  {id:'mng',cat:'sweet',ar:'كيكة المانجو',en:'Mango cake',price:3.75,prep:2}
+];
+
+const I18N = {
+ ar:{brand:'نداء',tabCustomer:'العميل',tabCashier:'الكاشير',tabAdmin:'الإعدادات',lang:'English',
+  demo:'وضع تجريبي',live:'متصل بالخادم',
+  menuTitle:'اطلب من مكانك',menuSub:'اختر، ادفع، واجلس. نرسل لك رسالة عندما يجهز طلبك.',
+  hot:'مشروبات ساخنة',cold:'مشروبات باردة',sweet:'حلويات',min:'د',
+  viewOrder:'متابعة الطلب',checkout:'تأكيد الطلب',back:'رجوع للمنيو',total:'المجموع',
+  phone:'رقم الجوال',phoneHint:'نرسل عليه رسالة الجاهزية، وتُجمع عليه أختام الولاء.',phoneErr:'أدخل رقم جوال صحيح (8 أرقام على الأقل).',
+  howPay:'طريقة الدفع',payOnline:'ادفع الآن من جوالك',payCounter:'ادفع عند الكاشير (نقداً أو بطاقة)',
+  payTitle:'الدفع الإلكتروني',payBtn:'ادفع {amt}',payNote:'هذه نافذة دفع تجريبية. في التشغيل الفعلي تفتح صفحة بوابة الدفع.',cancel:'إلغاء',
+  showCode:'أظهر هذا الرمز للكاشير ليؤكد الدفع. بعدها يظهر رقم طلبك فوراً.',
+  awaiting:'بانتظار الدفع',preparing:'قيد التحضير',ready:'جاهز',picked:'تم الاستلام',
+  orderNo:'رقم الطلب',remaining:'الوقت المتبقي تقريباً',almost:'لحظات ويجهز…',
+  readyTitle:'طلبك جاهز!',readySub:'تفضّل للكاونتر واستلمه.',
+  thanks:'بالعافية!',reviewQ:'كيف كانت تجربتك؟',reviewGoogle:'اكتب تقييمك على Google',
+  privateFb:'عندك ملاحظة تحب توصلها لنا مباشرة؟',send:'إرسال الملاحظة',sent:'وصلت ملاحظتك، شكراً لك.',
+  newOrder:'طلب جديد',stamps:'بطاقة الولاء',stampsOf:'{n} من {g} أختام',reward:'لديك {r} مشروب مجاني، اطلبه من الكاشير.',
+  addApple:'إضافة إلى Apple Wallet',addGoogle:'إضافة إلى Google Wallet',
+  walletDemo:'إصدار البطاقة يحتاج الخادم المرفق وشهادات Apple وGoogle. راجع ملف README.',
+  confirmPaid:'تأكيد الدفع',markReady:'جاهز',markPicked:'تم الاستلام',noOrders:'لا توجد طلبات',
+  late:'متأخر',addTime:'إضافة وقت',paidVia:{online:'دفع إلكتروني',counter:'عند الكاشير'},
+  settings:'إعدادات المتجر',storeName:'اسم المتجر (عربي)',storeNameEn:'اسم المتجر (إنجليزي)',
+  reviewUrl:'رابط التقييم على Google',reviewHint:'من Google Business Profile: «اطلب تقييمات» ثم انسخ الرابط.',
+  currency:'العملة (عربي)',currencyEn:'العملة (إنجليزي)',goal:'عدد الأختام للمشروب المجاني',perOrder:'دقائق تضاف لكل طلب في الطابور',
+  save:'حفظ',saved:'تم الحفظ',reset:'مسح بيانات التجربة',resetDone:'تم مسح بيانات التجربة',
+  smsLog:'الرسائل النصية المرسلة',feedback:'الملاحظات الخاصة',none:'لا يوجد شيء بعد',
+  pinTitle:'رمز الكاشير',pinEnter:'دخول',pinErr:'الرمز غير صحيح',
+  netErr:'تعذّر الاتصال بالخادم. أعد المحاولة.',
+  smsPaid:'{s}: استلمنا طلبك رقم {n}. الوقت المتوقع {m} دقيقة. ختم {st}/{g}.',
+  smsReady:'{s}: طلبك رقم {n} جاهز، تفضّل للكاونتر.',
+  smsTime:'{s}: طلبك رقم {n} يحتاج {m} دقائق إضافية. نعتذر عن الانتظار.',
+  smsReward:'{s}: مبروك! حصلت على مشروب مجاني.'},
+ en:{brand:'Nidaa',tabCustomer:'Customer',tabCashier:'Cashier',tabAdmin:'Settings',lang:'العربية',
+  demo:'Demo mode',live:'Connected',
+  menuTitle:'Order from your seat',menuSub:'Pick, pay, and sit down. We’ll text you when it’s ready.',
+  hot:'Hot drinks',cold:'Cold drinks',sweet:'Sweets',min:'min',
+  viewOrder:'Review order',checkout:'Confirm order',back:'Back to menu',total:'Total',
+  phone:'Mobile number',phoneHint:'We text you when your order is ready and collect your stamps on it.',phoneErr:'Enter a valid mobile number (at least 8 digits).',
+  howPay:'Payment',payOnline:'Pay now on your phone',payCounter:'Pay at the counter (cash or card)',
+  payTitle:'Online payment',payBtn:'Pay {amt}',payNote:'This is a demo payment window. In production the payment gateway page opens.',cancel:'Cancel',
+  showCode:'Show this code at the counter to confirm payment. Your order number appears right after.',
+  awaiting:'Awaiting payment',preparing:'Preparing',ready:'Ready',picked:'Picked up',
+  orderNo:'Order number',remaining:'Approximate time left',almost:'Any moment now…',
+  readyTitle:'Your order is ready!',readySub:'Please pick it up at the counter.',
+  thanks:'Enjoy!',reviewQ:'How was your visit?',reviewGoogle:'Write a review on Google',
+  privateFb:'Have a note you’d like to send us directly?',send:'Send note',sent:'Note received. Thank you.',
+  newOrder:'New order',stamps:'Loyalty card',stampsOf:'{n} of {g} stamps',reward:'You have {r} free drink. Ask at the counter.',
+  addApple:'Add to Apple Wallet',addGoogle:'Add to Google Wallet',
+  walletDemo:'Issuing the card needs the included server and Apple/Google certificates. See README.',
+  confirmPaid:'Confirm payment',markReady:'Ready',markPicked:'Picked up',noOrders:'No orders',
+  late:'Late',addTime:'Add time',paidVia:{online:'Paid online',counter:'At counter'},
+  settings:'Store settings',storeName:'Store name (Arabic)',storeNameEn:'Store name (English)',
+  reviewUrl:'Google review link',reviewHint:'From Google Business Profile: “Ask for reviews”, then copy the link.',
+  currency:'Currency (Arabic)',currencyEn:'Currency (English)',goal:'Stamps for a free drink',perOrder:'Minutes added per order in queue',
+  save:'Save',saved:'Saved',reset:'Clear demo data',resetDone:'Demo data cleared',
+  smsLog:'Sent text messages',feedback:'Private notes',none:'Nothing yet',
+  pinTitle:'Cashier PIN',pinEnter:'Enter',pinErr:'Wrong PIN',
+  netErr:'Couldn’t reach the server. Try again.',
+  smsPaid:'{s}: We got your order #{n}. About {m} min. Stamp {st}/{g}.',
+  smsReady:'{s}: Order #{n} is ready at the counter.',
+  smsTime:'{s}: Order #{n} needs {m} more minutes. Sorry for the wait.',
+  smsReward:'{s}: Congrats! You earned a free drink.'}
+};
+
+/* ---------------- state ---------------- */
+const S = {
+  lang: ls('nidaa_lang') || 'ar',
+  view: 'customer', cat: 'hot', cart: {}, step: 'menu',
+  myOrderId: ls('nidaa_my_order'), phone: ls('nidaa_phone') || '',
+  mode: 'demo', settings: {...DEFAULT_SETTINGS}, menu: DEFAULT_MENU,
+  orders: [], myOrder: null, loyalty: null, sms: [], feedback: [],
+  lastStatus: null, fbSent: false, pin: ss('nidaa_pin') || ''
+};
+function ls(k, v){ try{ if(v===undefined) return localStorage.getItem(k); if(v===null) localStorage.removeItem(k); else localStorage.setItem(k,v);}catch(e){} return null }
+function ss(k, v){ try{ if(v===undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k,v);}catch(e){} return null }
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function t(k, v){ let s = I18N[S.lang][k] ?? I18N.ar[k] ?? k; if(v) for(const x in v) s = s.split('{'+x+'}').join(v[x]); return s }
+const nm = o => S.lang==='ar' ? o.ar : o.en;
+const store = () => S.lang==='ar' ? S.settings.storeName : S.settings.storeNameEn;
+const money = n => { const c = S.lang==='ar' ? S.settings.currency : S.settings.currencyEn; return Number(n).toFixed(2).replace(/\.00$/,'') + ' ' + c };
+const fmt = ms => { if(ms<=0) return null; const s=Math.ceil(ms/1000), m=Math.floor(s/60); return m+':'+String(s%60).padStart(2,'0') };
+
+/* ---------------- shared business logic (mirrors server/lib/core.js) ---------------- */
+const Core = {
+  today(){ const d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate() },
+  rid(){ return Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4) },
+  ref(){ const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let r=''; for(let i=0;i<4;i++) r+=a[Math.floor(Math.random()*a.length)]; return r },
+  normPhone(p){ const d=String(p||'').replace(/[^\d+]/g,''); return d.replace(/\D/g,'').length>=8 ? d : null },
+  smsText(db, key, o, vars){ const L=I18N[o.lang]||I18N.ar; let s=L[key]; const all={s:o.lang==='en'?db.settings.storeNameEn:db.settings.storeName,n:o.number,...vars}; for(const x in all) s=s.split('{'+x+'}').join(all[x]); return s },
+  sendSms(db, to, text){ db.sms.unshift({to, text, at:Date.now()}); db.sms = db.sms.slice(0,200) },
+  createOrder(db, {items, phone, pay, lang}){
+    const lines = items.map(i => { const m = db.menu.find(x=>x.id===i.id); return m && i.qty>0 ? {id:m.id, ar:m.ar, en:m.en, price:m.price, prep:m.prep, qty:Math.min(20, i.qty|0)} : null }).filter(Boolean);
+    if(!lines.length) throw new Error('empty');
+    const p = Core.normPhone(phone); if(!p) throw new Error('phone');
+    const o = {id:Core.rid(), ref:Core.ref(), items:lines, total:+lines.reduce((s,l)=>s+l.price*l.qty,0).toFixed(3),
+      phone:p, pay: pay==='online'?'online':'counter', lang: lang==='en'?'en':'ar', status:'awaiting_payment',
+      number:null, createdAt:Date.now(), paidAt:null, etaAt:null, estMin:null, extraMin:0, readyAt:null};
+    db.orders.push(o); return o;
+  },
+  markPaid(db, id, method){
+    const o = db.orders.find(x=>x.id===id); if(!o || o.status!=='awaiting_payment') return o;
+    if(db.seq.day!==Core.today()) db.seq = {day:Core.today(), n:0};
+    const ahead = db.orders.filter(x=>x.status==='preparing').length;
+    o.number = ++db.seq.n; o.paidAt = Date.now(); o.method = method || o.pay;
+    o.estMin = Math.max(...o.items.map(i=>i.prep)) + Math.min(ahead,10) * (+db.settings.perOrderMin||0);
+    o.etaAt = o.paidAt + o.estMin*60000; o.status = 'preparing';
+    const c = db.customers[o.phone] || (db.customers[o.phone] = {stamps:0, rewards:0, visits:0});
+    c.stamps++; c.visits++; let rewarded=false;
+    const g = +db.settings.goal || 8; if(c.stamps>=g){ c.stamps-=g; c.rewards++; rewarded=true }
+    Core.sendSms(db, o.phone, Core.smsText(db,'smsPaid',o,{m:o.estMin, st:c.stamps, g}));
+    if(rewarded) Core.sendSms(db, o.phone, Core.smsText(db,'smsReward',o,{}));
+    return o;
+  },
+  addTime(db, id, min){
+    const o = db.orders.find(x=>x.id===id); if(!o || o.status!=='preparing') return o;
+    o.etaAt = Math.max(o.etaAt, Date.now()) + min*60000; o.extraMin += min;
+    if(min>=5) Core.sendSms(db, o.phone, Core.smsText(db,'smsTime',o,{m:min}));
+    return o;
+  },
+  markReady(db, id){ const o=db.orders.find(x=>x.id===id); if(!o||o.status!=='preparing') return o; o.status='ready'; o.readyAt=Date.now(); Core.sendSms(db,o.phone,Core.smsText(db,'smsReady',o,{})); return o },
+  markPicked(db, id){ const o=db.orders.find(x=>x.id===id); if(!o||o.status!=='ready') return o; o.status='picked'; o.pickedAt=Date.now(); return o },
+  loyalty(db, phone){ const c=db.customers[phone]||{stamps:0,rewards:0,visits:0}; return {...c, goal:+db.settings.goal||8} },
+  todays(db){ const start=new Date(); start.setHours(0,0,0,0); return db.orders.filter(o=>o.createdAt>=start.getTime()) }
+};
+
+/* ---------------- data layer: demo (browser) or live (server /api) ---------------- */
+const DKEY = 'nidaa_demo_v1';
+const Demo = {
+  load(){ try{ const d=JSON.parse(ls(DKEY)); if(d && d.orders) return d }catch(e){} return {settings:{...DEFAULT_SETTINGS}, menu:DEFAULT_MENU, orders:[], customers:{}, sms:[], feedback:[], seq:{day:'',n:0}} },
+  tx(fn){ const db=Demo.load(); const r=fn(db); ls(DKEY, JSON.stringify(db)); return JSON.parse(JSON.stringify(r ?? null)) },
+  async boot(){ const db=Demo.load(); return {settings:db.settings, menu:db.menu} },
+  async create(body){ return {order: Demo.tx(db=>Core.createOrder(db, body))} },
+  async getOrder(id){ return Demo.tx(db=>db.orders.find(o=>o.id===id)||null) },
+  async loyalty(p){ return Demo.tx(db=>Core.loyalty(db,p)) },
+  async feedback(id, text){ return Demo.tx(db=>{ const o=db.orders.find(x=>x.id===id); db.feedback.unshift({text, number:o?.number, phone:o?.phone, at:Date.now()}); }) },
+  async orders(){ return Demo.tx(db=>Core.todays(db)) },
+  async act(id, action, arg){ return Demo.tx(db=>{ if(action==='paid') return Core.markPaid(db,id,'counter'); if(action==='time') return Core.addTime(db,id,arg); if(action==='ready') return Core.markReady(db,id); if(action==='picked') return Core.markPicked(db,id); }) },
+  async payOnline(id){ return Demo.tx(db=>Core.markPaid(db,id,'online')) },
+  async admin(){ const db=Demo.load(); return {sms:db.sms, feedback:db.feedback} },
+  async saveSettings(s){ return Demo.tx(db=>{ db.settings={...db.settings, ...s}; return db.settings }) },
+  reset(){ ls(DKEY, null) }
+};
+async function req(path, opt={}){
+  const r = await fetch('api/'+path, {...opt, headers:{'Content-Type':'application/json', 'x-pin':S.pin, ...(opt.headers||{})}});
+  if(r.status===401){ const e=new Error('pin'); e.code=401; throw e }
+  if(!r.ok) throw new Error('http '+r.status);
+  return r.json();
+}
+const Live = {
+  boot: () => req('state'),
+  create: b => req('orders', {method:'POST', body:JSON.stringify(b)}),
+  getOrder: id => req('orders/'+encodeURIComponent(id)),
+  loyalty: p => req('loyalty/'+encodeURIComponent(p)),
+  feedback: (id, text) => req('orders/'+encodeURIComponent(id)+'/feedback', {method:'POST', body:JSON.stringify({text})}),
+  orders: () => req('cashier/orders'),
+  act: (id, a, arg) => req('cashier/orders/'+encodeURIComponent(id)+'/'+a, {method:'POST', body:JSON.stringify({min:arg})}),
+  admin: () => req('admin/log'),
+  saveSettings: s => req('admin/settings', {method:'PUT', body:JSON.stringify(s)})
+};
+let API = Demo;
+
+/* ---------------- routing & header ---------------- */
+function route(){ const h=(location.hash||'').slice(1); S.view = ['customer','cashier','admin'].includes(h) ? h : 'customer'; render(); refresh() }
+function applyLang(){ document.documentElement.lang=S.lang; document.documentElement.dir=S.lang==='ar'?'rtl':'ltr'; document.title=t('brand')+' — '+store() }
+function header(){
+  const tab=(v,k)=>`<a href="#${v}" ${S.view===v?'aria-current="page"':''}>${t(k)}</a>`;
+  const showTabs = S.mode==='demo' || S.view!=='customer';
+  $('#hdr').innerHTML = `
+    <div class="brand"><span class="mark" aria-hidden="true">${S.lang==='ar'?'ن':'N'}</span><span>${esc(store())}<br><span class="store">${t('brand')}</span></span></div>
+    <div class="spacer"></div>
+    ${showTabs?`<nav class="tabs" aria-label="views">${tab('customer','tabCustomer')}${tab('cashier','tabCashier')}${tab('admin','tabAdmin')}</nav>`:''}
+    <span class="badge ${S.mode==='live'?'live':''}">${S.mode==='live'?t('live'):t('demo')}</span>
+    <button class="ghost" data-act="lang">${t('lang')}</button>`;
+}
+function render(){
+  applyLang(); header();
+  const v = S.view==='cashier' ? viewCashier() : S.view==='admin' ? viewAdmin() : viewCustomer();
+  $('#app').innerHTML = v; tick();
+}
+
+/* ---------------- customer ---------------- */
+const cartCount = () => Object.values(S.cart).reduce((a,b)=>a+b,0);
+const cartTotal = () => Object.entries(S.cart).reduce((s,[id,q])=>{ const m=S.menu.find(x=>x.id===id); return s+(m?m.price*q:0) },0);
+function viewCustomer(){
+  if(S.myOrder && !(S.myOrder.status==='picked' && S.dismissed)) return viewStatus(S.myOrder);
+  if(S.step==='checkout' && cartCount()) return viewCheckout();
+  const cats=['hot','cold','sweet'];
+  const items = S.menu.filter(m=>m.cat===S.cat).map(m=>{ const q=S.cart[m.id]||0; return `
+    <div class="item">
+      <div><div class="item-name">${esc(nm(m))}</div>
+        <div class="meta"><span class="price">${money(m.price)}</span><span class="clock" aria-label="prep">⏱ ${m.prep} ${t('min')}</span></div></div>
+      <div class="step">${q?`<button data-act="dec" data-id="${m.id}" aria-label="−">−</button><span>${q}</span>`:''}<button class="add" data-act="inc" data-id="${m.id}" aria-label="+ ${esc(nm(m))}">+</button></div>
+    </div>`}).join('');
+  const n=cartCount();
+  return `<div class="wrap">
+    <h1>${t('menuTitle')}</h1><p class="sub">${t('menuSub')}</p>
+    <div class="cats" role="group">${cats.map(c=>`<button class="cat" data-act="cat" data-id="${c}" aria-pressed="${S.cat===c}">${t(c)}</button>`).join('')}</div>
+    <div class="list">${items}</div>
+  </div>
+  ${n?`<div class="bar"><button class="btn" data-act="toCheckout"><span>${t('viewOrder')} (${n})</span><span>${money(cartTotal())}</span></button></div>`:''}`;
+}
+function viewCheckout(){
+  const lines = Object.entries(S.cart).map(([id,q])=>{ const m=S.menu.find(x=>x.id===id); return m?`<div class="line"><span>${q} × ${esc(nm(m))}</span><span>${money(m.price*q)}</span></div>`:'' }).join('');
+  return `<div class="wrap">
+    <button class="ghost" data-act="toMenu">${S.lang==='ar'?'→':'←'} ${t('back')}</button>
+    <h1>${t('checkout')}</h1>
+    <div class="card">${lines}<div class="line total"><span>${t('total')}</span><span>${money(cartTotal())}</span></div></div>
+    <div class="card"><label for="ph">${t('phone')}</label>
+      <input id="ph" class="inp" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" value="${esc(S.phone)}" placeholder="07X XXX XXXX">
+      <div class="hint">${t('phoneHint')}</div><div class="err" id="phErr" hidden>${t('phoneErr')}</div></div>
+    <h2>${t('howPay')}</h2>
+    <div class="paygrid">
+      <button class="btn" data-act="place" data-id="online"><span>${t('payOnline')}</span><span>${money(cartTotal())}</span></button>
+      <button class="btn sec" data-act="place" data-id="counter"><span>${t('payCounter')}</span></button>
+    </div></div>`;
+}
+function ringSvg(frac){ const C=2*Math.PI*96; return `<svg viewBox="0 0 220 220" aria-hidden="true"><circle class="ring-bg" cx="110" cy="110" r="96"/><circle class="ring-fg" id="ringFg" cx="110" cy="110" r="96" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-frac)}"/></svg>` }
+function viewStatus(o){
+  let body='';
+  if(o.status==='awaiting_payment'){
+    body = `<span class="pill">${t('awaiting')}</span><div class="ref">${esc(o.ref)}</div>
+      <p class="sub">${t('showCode')}</p><div class="card"><div class="line total" style="border:0;margin:0;padding:0"><span>${t('total')}</span><span>${money(o.total)}</span></div></div>`;
+  } else if(o.status==='preparing' || o.status==='ready'){
+    const ready=o.status==='ready';
+    body = `<span class="pill">${ready?t('ready'):t('preparing')}</span>
+      <div class="ring-box">${ringSvg(ready?1:0)}<div class="ring-num"><small>${t('orderNo')}</small><b>${o.number}</b></div></div>
+      ${ready?`<h1>${t('readyTitle')}</h1><p class="sub">${t('readySub')}</p>`:`<div class="timer" id="myTimer" data-eta="${o.etaAt}" data-paid="${o.paidAt}"></div><p class="sub">${t('remaining')}</p>`}`;
+  } else {
+    body = `<h1>${t('thanks')}</h1><div class="card" style="text-align:start"><h2>${t('reviewQ')}</h2>
+      <a class="btn saff center" href="${esc(S.settings.reviewUrl)}" target="_blank" rel="noopener">★ ${t('reviewGoogle')}</a>
+      <p class="hint" style="margin-top:14px">${t('privateFb')}</p>
+      ${S.fbSent?`<p>${t('sent')}</p>`:`<textarea class="inp" id="fb" maxlength="1000"></textarea><button class="btn sec center" style="margin-top:8px" data-act="fb">${t('send')}</button>`}
+      </div><button class="btn center" data-act="newOrder">${t('newOrder')}</button>`;
+  }
+  return `<div class="wrap status ${o.status==='ready'?'ready':''}">${body}${o.status!=='awaiting_payment'?loyaltyCard():''}
+    ${o.status!=='picked'&&o.status!=='awaiting_payment'?'':''}</div>`;
+}
+function loyaltyCard(){
+  const L=S.loyalty; if(!L) return '';
+  const dots=Array.from({length:L.goal},(_,i)=>`<span class="dot ${i<L.stamps?'on':''}">${i<L.stamps?'✓':''}</span>`).join('');
+  const ua=navigator.userAgent, ios=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1), android=/Android/.test(ua);
+  const apple=`<button class="wbtn" data-act="wallet" data-id="apple"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.1 2.5-1.8 3.1-.5 7.6 1.3 10.1.8 1.2 1.8 2.6 3.1 2.5 1.3-.1 1.7-.8 3.3-.8 1.5 0 1.9.8 3.3.8 1.4 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.6-1-2.6-4.2zM14 5.4c.7-.8 1.1-1.9 1-3-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.2-.6 2.9-1.4z"/></svg>${t('addApple')}</button>`;
+  const google=`<button class="wbtn g" data-act="wallet" data-id="google"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="4" rx="1.5" fill="#4285F4"/><rect x="3" y="8" width="18" height="4" rx="1.5" fill="#34A853"/><rect x="3" y="11" width="18" height="4" rx="1.5" fill="#FBBC04"/><rect x="3" y="14" width="18" height="5" rx="1.5" fill="#EA4335"/></svg>${t('addGoogle')}</button>`;
+  return `<div class="card" style="text-align:start;margin-top:18px"><h2>${t('stamps')}</h2>
+    <div class="meta">${t('stampsOf',{n:L.stamps,g:L.goal})}</div><div class="loy">${dots}</div>
+    ${L.rewards?`<p><b>${t('reward',{r:L.rewards})}</b></p>`:''}
+    <div class="wallet">${ios?apple:android?google:apple+google}</div></div>`;
+}
+
+/* ---------------- cashier ---------------- */
+function viewCashier(){
+  if(S.mode==='live' && !S.pinOk) return `<div class="wrap"><div class="card"><label for="pin">${t('pinTitle')}</label>
+    <input id="pin" class="inp" type="password" inputmode="numeric" dir="ltr"><div class="err" id="pinErr" hidden>${t('pinErr')}</div>
+    <button class="btn center" style="margin-top:10px" data-act="pin">${t('pinEnter')}</button></div></div>`;
+  const by=s=>S.orders.filter(o=>o.status===s);
+  const items=o=>`<ul class="t-items">${o.items.map(i=>`<li>${i.qty} × ${esc(nm(i))}</li>`).join('')}</ul>`;
+  const col=(s,list,fn)=>`<section class="col"><h2>${t(s==='awaiting_payment'?'awaiting':s)}<span class="count">${list.length}</span></h2>${list.length?list.map(fn).join(''):`<div class="empty">${t('noOrders')}</div>`}</section>`;
+  const awaiting=col('awaiting_payment',by('awaiting_payment'),o=>`<article class="ticket"><div class="t-head"><span class="t-ref">${esc(o.ref)}</span><b>${money(o.total)}</b></div>${items(o)}
+    <div class="meta" dir="ltr" style="justify-content:flex-end">${esc(o.phone)}</div><div class="t-act"><button class="btn-sm go" data-act="cash" data-op="paid" data-id="${o.id}">${t('confirmPaid')}</button></div></article>`);
+  const prep=col('preparing',by('preparing').sort((a,b)=>a.etaAt-b.etaAt),o=>`<article class="ticket"><div class="t-head"><span class="t-num">${o.number}</span><span class="t-time" data-eta="${o.etaAt}"></span></div>
+    <div class="meta">${t('paidVia')[o.method]||''}${o.extraMin?` · +${o.extraMin} ${t('min')}`:''}</div>${items(o)}
+    <div class="t-act">${[2,5,10].map(m=>`<button class="btn-sm" data-act="cash" data-op="time" data-min="${m}" data-id="${o.id}" aria-label="${t('addTime')} ${m}">+${m} ${t('min')}</button>`).join('')}
+    <button class="btn-sm saff" data-act="cash" data-op="ready" data-id="${o.id}">${t('markReady')}</button></div></article>`);
+  const ready=col('ready',by('ready'),o=>`<article class="ticket"><div class="t-head"><span class="t-num">${o.number}</span></div>${items(o)}
+    <div class="t-act"><button class="btn-sm go" data-act="cash" data-op="picked" data-id="${o.id}">${t('markPicked')}</button></div></article>`);
+  return `<div class="wide"><div class="kds">${awaiting}${prep}${ready}</div></div>`;
+}
+
+/* ---------------- admin ---------------- */
+function viewAdmin(){
+  if(S.mode==='live' && !S.pinOk) return viewCashier();
+  const s=S.settings, f=(k,type='text',dir='')=>`<div><label for="s_${k}">${t(k)}</label><input id="s_${k}" class="inp" type="${type}" ${dir?`dir="${dir}"`:''} value="${esc(s[k])}">${k==='reviewUrl'?`<div class="hint">${t('reviewHint')}</div>`:''}</div>`;
+  const log=(arr,fn)=>arr.length?arr.map(fn).join(''):`<div class="empty">${t('none')}</div>`;
+  const tm=at=>new Date(at).toLocaleString(S.lang==='ar'?'ar':'en');
+  return `<div class="wide"><div class="grid2">
+    <section class="card"><h2>${t('settings')}</h2><div class="row">
+      ${f('storeName')}${f('storeNameEn','text','ltr')}${f('reviewUrl','url','ltr')}${f('currency')}${f('currencyEn','text','ltr')}${f('goal','number')}${f('perOrderMin','number')}
+      <button class="btn center" data-act="saveSettings">${t('save')}</button>
+      ${S.mode==='demo'?`<button class="btn sec center" data-act="reset">${t('reset')}</button>`:''}</div></section>
+    <section class="card"><h2>${t('smsLog')}</h2><div class="log">${log(S.sms,m=>`<div><time>${tm(m.at)} — <span dir="ltr">${esc(m.to)}</span></time>${esc(m.text)}</div>`)}</div></section>
+    <section class="card"><h2>${t('feedback')}</h2><div class="log">${log(S.feedback,m=>`<div><time>${tm(m.at)}${m.number?' — #'+m.number:''}</time>${esc(m.text)}</div>`)}</div></section>
+  </div></div>`;
+}
+I18N.ar.perOrderMin = I18N.ar.perOrder; I18N.en.perOrderMin = I18N.en.perOrder;
+
+/* ---------------- live ticking ---------------- */
+function tick(){
+  const now=Date.now();
+  document.querySelectorAll('[data-eta]').forEach(el=>{
+    const left=+el.dataset.eta-now, f=fmt(left);
+    if(el.id==='myTimer'){ el.textContent = f || t('almost');
+      const fg=$('#ringFg'); if(fg){ const C=2*Math.PI*96, total=(+el.dataset.eta)-(+el.dataset.paid); const frac=Math.min(1,Math.max(0,1-left/total)); fg.style.strokeDashoffset=C*(1-frac) } }
+    else { el.textContent = f || t('late'); el.classList.toggle('late', !f) }
+  });
+}
+setInterval(tick, 1000);
+
+let busy=false;
+async function refresh(){
+  if(busy) return; busy=true;
+  try{
+    if(S.view==='customer' && S.myOrderId){
+      const o = await API.getOrder(S.myOrderId);
+      if(!o){ S.myOrderId=null; ls('nidaa_my_order',null); S.myOrder=null }
+      else{
+        const changed = !S.myOrder || S.myOrder.status!==o.status || S.myOrder.etaAt!==o.etaAt || S.myOrder.number!==o.number;
+        if(S.lastStatus && S.lastStatus!=='ready' && o.status==='ready') alertReady();
+        S.lastStatus=o.status; S.myOrder=o;
+        if(o.status!=='awaiting_payment'){ const L=await API.loyalty(o.phone); if(JSON.stringify(L)!==JSON.stringify(S.loyalty)){ S.loyalty=L; if(!changed) safeRender() } }
+        if(changed) safeRender();
+      }
+    } else if(S.view==='cashier' && (S.mode==='demo'||S.pinOk)){
+      const list=await API.orders(); if(JSON.stringify(list)!==JSON.stringify(S.orders)){ S.orders=list; safeRender() }
+    } else if(S.view==='admin' && (S.mode==='demo'||S.pinOk)){
+      const a=await API.admin(); if(JSON.stringify(a)!==JSON.stringify({sms:S.sms,feedback:S.feedback})){ S.sms=a.sms; S.feedback=a.feedback; safeRender() }
+    }
+  }catch(e){ if(e.code===401){ S.pinOk=false; ss('nidaa_pin',''); safeRender() } }
+  busy=false;
+}
+function safeRender(){ const a=document.activeElement; if(a && /INPUT|TEXTAREA/.test(a.tagName) && $('#app').contains(a)) return; render() }
+setInterval(refresh, 2500);
+window.addEventListener('storage', e=>{ if(e.key===DKEY) refresh() });
+
+function alertReady(){
+  try{ navigator.vibrate && navigator.vibrate([300,120,300,120,500]) }catch(e){}
+  try{ const A=window.AudioContext||window.webkitAudioContext; const ctx=new A(); [0,.25,.5].forEach((d,i)=>{ const o=ctx.createOscillator(), g=ctx.createGain(); o.frequency.value=[660,880,990][i]; o.connect(g); g.connect(ctx.destination); g.gain.setValueAtTime(.18,ctx.currentTime+d); g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.22); o.start(ctx.currentTime+d); o.stop(ctx.currentTime+d+.24) }) }catch(e){}
+  $('#live').textContent=t('readyTitle');
+}
+function toast(msg){ const el=document.createElement('div'); el.className='toast'; el.role='status'; el.textContent=msg; document.body.appendChild(el); setTimeout(()=>el.remove(),3200) }
+
+/* ---------------- actions ---------------- */
+document.addEventListener('click', async e=>{
+  const b=e.target.closest('[data-act]'); if(!b) return;
+  const a=b.dataset.act, id=b.dataset.id;
+  try{
+  if(a==='lang'){ S.lang=S.lang==='ar'?'en':'ar'; ls('nidaa_lang',S.lang); render() }
+  else if(a==='cat'){ S.cat=id; render() }
+  else if(a==='inc'){ S.cart[id]=(S.cart[id]||0)+1; render() }
+  else if(a==='dec'){ S.cart[id]=Math.max(0,(S.cart[id]||0)-1); if(!S.cart[id]) delete S.cart[id]; render() }
+  else if(a==='toCheckout'){ S.step='checkout'; render(); scrollTo(0,0) }
+  else if(a==='toMenu'){ S.step='menu'; render() }
+  else if(a==='place'){
+    const p=Core.normPhone($('#ph').value); if(!p){ $('#phErr').hidden=false; $('#ph').focus(); return }
+    S.phone=p; ls('nidaa_phone',p); b.disabled=true;
+    const res=await API.create({items:Object.entries(S.cart).map(([id,qty])=>({id,qty})), phone:p, pay:id, lang:S.lang});
+    if(res.paymentUrl){ ls('nidaa_my_order',res.order.id); location.href=res.paymentUrl; return }
+    S.myOrderId=res.order.id; ls('nidaa_my_order',S.myOrderId); S.myOrder=res.order; S.lastStatus=res.order.status; S.cart={}; S.step='menu'; S.fbSent=false; S.dismissed=false;
+    render(); scrollTo(0,0);
+    if(id==='online' && S.mode==='demo') paySheet(res.order);
+  }
+  else if(a==='payNow'){ const o=await Demo.payOnline(id); closeSheet(); S.myOrder=o; S.lastStatus=o.status; await refresh(); render() }
+  else if(a==='closeSheet'){ closeSheet() }
+  else if(a==='fb'){ const v=$('#fb').value.trim(); if(!v) return; await API.feedback(S.myOrderId, v); S.fbSent=true; render() }
+  else if(a==='newOrder'){ S.myOrderId=null; ls('nidaa_my_order',null); S.myOrder=null; S.loyalty=null; S.lastStatus=null; render(); scrollTo(0,0) }
+  else if(a==='wallet'){
+    if(S.mode==='demo'){ toast(t('walletDemo')); return }
+    const ph=encodeURIComponent(S.myOrder.phone);
+    if(id==='apple') location.href='api/wallet/apple/'+ph;
+    else { const r=await req('wallet/google/'+ph); location.href=r.url }
+  }
+  else if(a==='cash'){ b.disabled=true; await API.act(id, b.dataset.op, +b.dataset.min||0); S.orders=await API.orders(); render() }
+  else if(a==='pin'){ S.pin=$('#pin').value; try{ await req('cashier/orders'); S.pinOk=true; ss('nidaa_pin',S.pin); render(); refresh() }catch(err){ $('#pinErr').hidden=false } }
+  else if(a==='saveSettings'){
+    const g=k=>$('#s_'+k).value.trim();
+    const s={storeName:g('storeName'),storeNameEn:g('storeNameEn'),reviewUrl:g('reviewUrl'),currency:g('currency'),currencyEn:g('currencyEn'),goal:Math.max(1,parseInt(g('goal'))||8),perOrderMin:Math.max(0,parseFloat(g('perOrderMin'))||0)};
+    S.settings=await API.saveSettings(s); toast(t('saved')); render();
+  }
+  else if(a==='reset'){ Demo.reset(); S.orders=[];S.sms=[];S.feedback=[];S.myOrder=null;S.myOrderId=null;ls('nidaa_my_order',null);S.settings={...DEFAULT_SETTINGS}; toast(t('resetDone')); render() }
+  }catch(err){ b.disabled=false; if(String(err.message)==='phone'){ $('#phErr') && ($('#phErr').hidden=false) } else toast(t('netErr')) }
+});
+function paySheet(o){
+  $('#layer').innerHTML=`<div class="sheet-bg"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="payT">
+    <h2 id="payT">${t('payTitle')}</h2><p class="hint">${t('payNote')}</p>
+    <div class="paygrid" style="margin-top:12px"><button class="btn center" data-act="payNow" data-id="${o.id}">${t('payBtn',{amt:money(o.total)})}</button>
+    <button class="btn sec center" data-act="closeSheet">${t('cancel')}</button></div></div></div>`;
+  $('#layer button').focus();
+}
+function closeSheet(){ $('#layer').innerHTML='' }
+
+/* ---------------- boot ---------------- */
+(async function boot(){
+  try{
+    const ctl=new AbortController(); const tm=setTimeout(()=>ctl.abort(),1500);
+    const r=await fetch('api/health',{signal:ctl.signal}); clearTimeout(tm);
+    if(r.ok && (await r.json()).ok){ API=Live; S.mode='live'; if(S.pin) S.pinOk=true }
+  }catch(e){}
+  try{ const b=await API.boot(); S.settings={...DEFAULT_SETTINGS,...b.settings}; S.menu=b.menu||DEFAULT_MENU }catch(e){}
+  const q=new URLSearchParams(location.search); if(q.get('order')){ S.myOrderId=q.get('order'); ls('nidaa_my_order',S.myOrderId) }
+  window.addEventListener('hashchange', route);
+  route();
+})();
+</script>
+</body>
+</html>

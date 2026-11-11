@@ -1,0 +1,90 @@
+[
+ {
+  "id": "esp",
+  "cat": "hot",
+  "ar": "إسبريسو",
+  "en": "Espresso",
+  "price": 1.5,
+  "prep": 3
+ },
+ {
+  "id": "ame",
+  "cat": "hot",
+  "ar": "أمريكانو",
+  "en": "Americano",
+  "price": 2,
+  "prep": 3
+ },
+ {
+  "id": "lat",
+  "cat": "hot",
+  "ar": "لاتيه",
+  "en": "Latte",
+  "price": 2.75,
+  "prep": 4
+ },
+ {
+  "id": "spl",
+  "cat": "hot",
+  "ar": "سبانش لاتيه",
+  "en": "Spanish latte",
+  "price": 3.25,
+  "prep": 5
+ },
+ {
+  "id": "krk",
+  "cat": "hot",
+  "ar": "شاي كرك",
+  "en": "Karak tea",
+  "price": 1.5,
+  "prep": 4
+ },
+ {
+  "id": "ilt",
+  "cat": "cold",
+  "ar": "آيس لاتيه",
+  "en": "Iced latte",
+  "price": 3,
+  "prep": 4
+ },
+ {
+  "id": "cbr",
+  "cat": "cold",
+  "ar": "كولد برو",
+  "en": "Cold brew",
+  "price": 3.5,
+  "prep": 2
+ },
+ {
+  "id": "moj",
+  "cat": "cold",
+  "ar": "موهيتو نعناع وليمون",
+  "en": "Mint lemon mojito",
+  "price": 3,
+  "prep": 5
+ },
+ {
+  "id": "chs",
+  "cat": "sweet",
+  "ar": "تشيز كيك",
+  "en": "Cheesecake",
+  "price": 3.5,
+  "prep": 2
+ },
+ {
+  "id": "crs",
+  "cat": "sweet",
+  "ar": "كرواسون زبدة دافئ",
+  "en": "Warm butter croissant",
+  "price": 2,
+  "prep": 6
+ },
+ {
+  "id": "mng",
+  "cat": "sweet",
+  "ar": "كيكة المانجو",
+  "en": "Mango cake",
+  "price": 3.75,
+  "prep": 2
+ }
+]
